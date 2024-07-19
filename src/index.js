@@ -1,17 +1,13 @@
-const app = require('./app')
+const fastify = require('fastify')({ logger: true }); // calling the fastify constructor
+const app = require('./app');
+const PORT = 3000;
 
-// Require the framework and instantiate it
-const fastify = require('fastify')({ logger: true })
+fastify.register(app);
 
-fastify.register(app)
-// Declare a route
-fastify.get('/', function handler (request, reply) {
-  reply.send({ hello: 'pong' })
-})
-// Run the server!
-fastify.listen({ port: 3000 }, (err) => {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-})
+fastify.listen({ port: PORT }, (err) => {
+    if (err) {
+      fastify.log.error(err);
+      process.exit(1)
+    }
+    console.log(`Server up at port ${PORT}`);
+});
