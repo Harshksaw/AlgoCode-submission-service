@@ -1,6 +1,7 @@
 const fastifyPlugin = require('fastify-plugin');
 const servicePlugin = require('./services/servicePlugin');
-const todoRoutes = require('./routes/todoRoutes');
+const repopsitoryPlugin = require('./repositories/repositoryPlugin');
+const todoRoutes = require('./routes/api/v1/submissionRoutes');
 
 /**
  * 
@@ -8,15 +9,15 @@ const todoRoutes = require('./routes/todoRoutes');
  * @param {*} options 
  */
 async function app(fastify, options) {
-    fastify.register(require('@fastify/cors'));
+    await fastify.register(require('@fastify/cors'));
+    await fastify.register(repopsitoryPlugin);
+    await fastify.register(servicePlugin);
 
+    await fastify.register(todoRoutes, {prefix: '/todos'});
 
-    fastify.register(servicePlugin);
-
-
-    fastify.register(todoRoutes, {prefix: '/todo'});
     // register test routes
-    fastify.register(require('./routes/api/apiRoutes'), {prefix: '/api'});
+    await fastify.register(require('./routes/api/apiRoutes'), {prefix: '/api'});
+
 
 }
 
