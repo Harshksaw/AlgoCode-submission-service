@@ -1,4 +1,3 @@
-const SubmissionCreationError = require('../errors/submissionCreationError');
 const SubmissionProducer = require('../producers/submissionQueueProducer');
 class SubmissionService {
     constructor(submissionRepository) {
@@ -14,7 +13,7 @@ class SubmissionService {
         const submission = await this.submissionRepository.createSubmission(submissionPayload);
         if(!submission) {
             // TODO: Add error handling here
-            throw new SubmissionCreationError('Failed to create a submission in the repository');
+            throw {messgae: "Not able to create submission"};
         }
         console.log(submission);
         const response = await SubmissionProducer(submission);
